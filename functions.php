@@ -2,10 +2,10 @@
 
 function getting(){
 
-  if(isset($_GET['id'])){
-    $id = $_GET['id'];
+  if(isset($_GET['url'])){
+    $url = $_GET['url'];
   $link = mysqli_connect("localhost","id6945815_root","sarthak01","id6945815_urlshortner");
-  $query = "SELECT url from `urls` WHERE id = '$id'";
+  $query = "SELECT url from `urls` WHERE string = '$url'";
   $result = mysqli_query($link,$query);
   if($result){
 
@@ -24,6 +24,16 @@ function getting(){
 
 }
 
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
 function inserting(){
 
   $link = mysqli_connect("localhost","id6945815_root","sarthak01","id6945815_urlshortner");
@@ -32,31 +42,37 @@ function inserting(){
     if(isset($_POST['submit'])){
       $url = $_POST['url'];
       if(filter_var($url, FILTER_VALIDATE_URL)){
-        $query = "SELECT id from `urls` WHERE url = '$url'";
+        $query = "SELECT string from `urls` WHERE url = '$url'";
         $result = mysqli_query($link,$query);
           if($result){
             if(mysqli_num_rows($result) > 0){
                 $row = mysqli_fetch_assoc($result);
 
                 echo '<div class="alert alert-success">
-<strong>Url: </strong>sadh.cf?id='.$row["id"].'
+<strong>Url: </strong><span id = "copy" >sadh.cf/?url='.$row["string"].'</span>&nbsp;<button onclick = "copyt()" class = "btn btn-success">Copy Link</button>
 </div>';
 
             }
             else{
+              
+              $strng = generateRandomString(4);
 
-              $query2 = "INSERT into `urls` (url) VALUES('$url')";
+              $query2 = "INSERT into `urls` (url,string) VALUES('$url','$strng')";
               $result2 = mysqli_query($link,$query2);
               if($result2){
 
-                $last_id = mysqli_insert_id($link);
+                
 
                 echo '<div class="alert alert-success">
-<strong>Url: </strong>sadh.cf?id='.$last_id.'
-</div>';
+                      <strong>Url: </strong><span id = "copy" >sadh.cf/?url='.$strng.'</span>&nbsp;
+                       <button onclick = "copyt()" class="btn btn-success">Copy Link</button></div>';
 
 
 
+              }
+              else{
+                   echo '<div class="alert alert-danger">
+                      <strong>Fail: </strong>Please try again!</div>';
               }
 
 

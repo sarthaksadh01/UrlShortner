@@ -23,6 +23,23 @@ getting();
 }
 
 </style>
+
+<script>
+
+    function copyt() {
+        
+    var copyText = document.getElementById("copy");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+    alert("Link Copied");
+}
+    
+    
+</script>
   </head>
   <body>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
